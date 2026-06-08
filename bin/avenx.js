@@ -18,13 +18,21 @@ class AvenxCLI {
     }
 
     run(command, args) {
+        const type = args[0];
+        const name = args[1];
+
         switch (command) {
             case 'init':
                 this.initProject();
                 break;
             case 'generate':
             case 'g':
-                this.generateComponent(args[0]);
+                if (type === 'bridge') {
+                    this.generateBridge(name);
+                } else {
+                    // Default to component if only one arg or type is 'component'
+                    this.generateComponent(name || type);
+                }
                 break;
             case 'build':
                 this.buildProject();
@@ -76,6 +84,44 @@ class AvenxCLI {
     }
 
     /**
+     * Generates a new Bridge class and template file.
+     */
+    generateBridge(name) {
+        if (!name) {
+            console.error('❌ Error: Please provide a bridge name (e.g., avenx g bridge auth)');
+            return;
+        }
+
+        const lowerName = name.toLowerCase();
+        const capitalizedName = lowerName
+            .split(/[-_]/)
+            .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+            .join('') + "Bridge";
+        
+        const globalDir = path.join(this.baseDir, 'src/global');
+        if (!fs.existsSync(globalDir)) {
+            fs.mkdirSync(globalDir, { recursive: true });
+        }
+
+        const bridgePath = path.join(globalDir, `${lowerName}.bridge.js`);
+
+        if (fs.existsSync(bridgePath)) {
+            console.error(`❌ Error: Bridge '${lowerName}' already exists.`);
+            return;
+        }
+
+        const template = fs.readFileSync(path.join(this.frameworkDir, 'templates/bridge/bridge.js.template'), 'utf-8');
+
+        fs.writeFileSync(
+            bridgePath,
+            template.replace(/{{ name }}/g, capitalizedName)
+        );
+
+        console.log(`✅ Bridge '${capitalizedName}' generated at src/global/${lowerName}.bridge.js`);
+        console.log(`ℹ️ It will be automatically registered as '${capitalizedName}' on the next build.`);
+    }
+
+    /**
      * Generates a new component folder and template files, and registers it in main.app.js.
      */
     generateComponent(name) {
@@ -85,7 +131,6 @@ class AvenxCLI {
         }
 
         const lowerName = name.toLowerCase();
-        // Convert user-profile or user_profile to UserProfile
         const capitalizedName = lowerName
             .split(/[-_]/)
             .map(part => part.charAt(0).toUpperCase() + part.slice(1))
@@ -127,7 +172,6 @@ class AvenxCLI {
         const importStatement = `import ${className} from './components/${folderName}/${folderName}.component.js';`;
         const registerStatement = `app.register('${className}', ${className});`;
 
-        // 1. Add Import (after last import)
         const lines = content.split('\n');
         let lastImportIndex = -1;
         for (let i = 0; i < lines.length; i++) {
@@ -140,7 +184,6 @@ class AvenxCLI {
             lines.unshift(importStatement);
         }
 
-        // 2. Add Register (after last app.register or after app instantiation)
         let lastRegisterIndex = -1;
         let appInstanceIndex = -1;
         for (let i = 0; i < lines.length; i++) {
@@ -156,7 +199,6 @@ class AvenxCLI {
             lines.push('', registerStatement);
         }
 
-        // 3. Add Mount (if no mount exists yet)
         const hasMount = lines.some(line => line.includes('app.mount('));
         if (!hasMount) {
             lines.push(`\napp.mount('${className}');`);
@@ -185,7 +227,6 @@ class AvenxCLI {
         const server = http.createServer((req, res) => {
             let filePath = path.join(this.baseDir, req.url === '/' ? 'index.html' : req.url);
             
-            // Support extensionless routes or handle missing files
             if (!fs.existsSync(filePath) && !path.extname(filePath)) {
                 filePath = path.join(this.baseDir, 'index.html');
             }
@@ -273,14 +314,15 @@ class AvenxCLI {
     printHelp() {
         console.log(`
 Avenx-JS CLI
-Usage: avenx <command> [options]
+Usage: avenx <command> [type] [name]
 
 Commands:
-  init              Initialize a new Avenx project structure
-  generate <name>   Generate a new component (alias: g)
-  build             Build the project into dist/bundle.js
-  serve [port]      Start dev server with hot-reload (default: 3000)
-  help              Show this help message
+  init                      Initialize a new Avenx project structure
+  generate component <name> Generate a new component (alias: g)
+  generate bridge <name>    Generate a new shared reactive bridge
+  build                     Build the project into dist/bundle.js
+  serve [port]              Start dev server with hot-reload (default: 3000)
+  help                      Show this help message
         `);
     }
 }
