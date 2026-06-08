@@ -1,6 +1,6 @@
 {
-  "name": "avenx-js",
-  "version": "1.0.0",
+  "name": "avenx-core",
+  "version": "0.1.0",
   "description": "A lightweight reactive framework with scoped CSS and custom components.",
   "main": "lib/compiler.js",
   "exports": {
@@ -25,13 +25,19 @@
     "framework",
     "compiler",
     "css-in-js",
-    "scoped-css"
+    "scoped-css",
+    "frontend",
+    "javascript",
+    "lightweight",
+    "components",
+    "cli",
+    "web-development"
   ],
   "author": "Avenx Team",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/avenx-js/avenx-js"
+    "url": "git+https://github.com/avenx-js/avenx-js.git"
   },
   "bugs": {
     "url": "https://github.com/avenx-js/avenx-js/issues"

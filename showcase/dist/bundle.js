@@ -237,22 +237,22 @@ class AvenxApp {
 
 class Footer extends AvenxComponent {
     constructor(bridges) {
-        super({}, bridges, `<footer class="avenx-de46dfbd">
-    Powered by <span class="avenx-c92d1ef5">Avenx-JS</span>
+        super({}, bridges, `<footer class="avenx-65b7cc5c">
+    Powered by <span class="avenx-3be8666b">Avenx-JS</span>
 </footer>`, {  });
     }
 }
 class Test extends AvenxComponent {
     constructor(bridges) {
-        super({"count":0}, bridges, `<div class="avenx-5a325b60"
-    <h1 class="avenx-d77148f1">Avenx Framework</h1>
-    <div class="avenx-3b955f89">
-        <span class="avenx-eeba9fbc">Reactive Counter</span>
-        <span class="avenx-1eebea02">{{ count }}</span>
+        super({"count":0}, bridges, `<div class="avenx-627449a6"
+    <h1 class="avenx-fc0ff300">Avenx Framework</h1>
+    <div class="avenx-ab1d203b">
+        <span class="avenx-8903a733">Reactive Counter</span>
+        <span class="avenx-dde4ffd8">{{ count }}</span>
     </div>
-    <div class="avenx-b1bc0732">
-        <button @click="count++" class="avenx-2483220a">Increment</button>
-        <button @click="reset()" class="avenx-46ba7228">Reset</button>
+    <div class="avenx-478d1601">
+        <button @click="count++" class="avenx-6330516b">Increment</button>
+        <button @click="reset()" class="avenx-f136f77f">Reset</button>
     </div>
 </div>`, { reset: `count = 0;` });
     }
