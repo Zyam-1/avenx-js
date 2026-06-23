@@ -158,7 +158,7 @@ class AvenxCLI {
             .split(/[-_]/)
             .map(part => part.charAt(0).toUpperCase() + part.slice(1))
             .join('') + "Guard";
-        
+
         const guardDir = path.join(this.baseDir, 'src/guards');
         if (!fs.existsSync(guardDir)) {
             fs.mkdirSync(guardDir, { recursive: true });
@@ -332,9 +332,9 @@ class AvenxCLI {
                     'Connection': 'keep-alive'
                 });
                 res.write('data: connected\n\n');
-                
+
                 this.liveReloadClients.push(res);
-                
+
                 req.on('close', () => {
                     this.liveReloadClients = this.liveReloadClients.filter(client => client !== res);
                 });
@@ -465,9 +465,8 @@ Commands:
   generate component <name> Generate a new component (alias: g)
   generate page <name>      Generate a new page (alias: g p)
   generate bridge <name>    Generate a new shared reactive bridge
-  build (b)                 Build the project into dist/bundle.js
   generate guard <name>     Generate a new route guard
-  build                     Build the project into dist/bundle.js
+  build (b)                 Build the project into dist/bundle.js
   serve [port]              Start dev server with hot-reload (default: 3000)
   help                      Show this help message
         `);
