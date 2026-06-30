@@ -30,6 +30,9 @@ const AvenxComponent = (function () {
   return exports.AvenxComponent;
 })();
 
+/**
+ *
+ */
 function benchmark() {
   const iterations = 10000;
 

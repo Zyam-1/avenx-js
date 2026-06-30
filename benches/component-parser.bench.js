@@ -134,6 +134,9 @@ fs.existsSync = (filePath) => {
   return originalExistsSync(filePath);
 };
 
+/**
+ *
+ */
 function benchmark() {
   const iterations = 1000;
   const styleProcessor = new StyleProcessor();

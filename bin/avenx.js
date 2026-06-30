@@ -44,7 +44,6 @@ class AvenxCLI {
    * 1. Structured path: <project_root>/.avenxtemplates/<subfolder>/<filename>
    * 2. Flat path: <project_root>/.avenxtemplates/<filename>
    * 3. Global path: <framework_dir>/templates/<subfolder>/<filename>
-   *
    * @param {string} subfolder - The template subfolder (e.g., 'component', 'page', 'vscode')
    * @param {string} filename - The template filename (e.g., 'component.js.template')
    * @returns {string} The template file content
@@ -66,7 +65,6 @@ class AvenxCLI {
 
   /**
    * Executes a given CLI command with provided arguments.
-   *
    * @param {string} command - The command to run (e.g., 'init', 'generate', 'build', 'serve', 'help').
    * @param {string[]} args - Additional arguments for the command.
    */
@@ -161,6 +159,7 @@ class AvenxCLI {
 
   /**
    * Generates a new Bridge class and template file.
+   * @param name
    */
   generateBridge(name) {
     if (!name) {
@@ -193,6 +192,7 @@ class AvenxCLI {
 
   /**
    * Generates a new Guard class and template file.
+   * @param name
    */
   generateGuard(name) {
     if (!name) {
@@ -225,6 +225,7 @@ class AvenxCLI {
 
   /**
    * Generates a new Page class and template files.
+   * @param name
    */
   generatePage(name) {
     if (!name) {
@@ -259,6 +260,7 @@ class AvenxCLI {
 
   /**
    * Generates a new component folder and template files, and registers it in main.app.js.
+   * @param name
    */
   generateComponent(name) {
     if (!name) {
@@ -292,12 +294,14 @@ class AvenxCLI {
 
   /**
    * Automatically adds import and registration for a component in src/main.app.js.
+   * @param className
+   * @param folderName
    */
   registerInMainApp(className, folderName) {
     const mainPath = path.join(this.baseDir, 'src/main.app.js');
     if (!fs.existsSync(mainPath)) return;
 
-    let content = fs.readFileSync(mainPath, 'utf-8');
+    const content = fs.readFileSync(mainPath, 'utf-8');
     const importStatement = `import ${className} from './components/${folderName}/${folderName}.component.js';`;
     const registerStatement = `app.register('${className}', ${className});`;
 
@@ -346,6 +350,10 @@ class AvenxCLI {
     new AvenxCompiler().build();
   }
 
+  /**
+   *
+   * @param args
+   */
   checkProject(args = []) {
     const originalWarn = console.warn;
     let warningCount = 0;
@@ -374,6 +382,7 @@ class AvenxCLI {
 
   /**
    * Starts a local development server and watches for changes.
+   * @param port
    */
   serveProject(port) {
     this.liveReloadClients = [];
@@ -491,6 +500,7 @@ class AvenxCLI {
 
   /**
    * Opens the browser to the specified URL.
+   * @param url
    */
   openBrowser(url) {
     const start = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
@@ -499,7 +509,6 @@ class AvenxCLI {
 
   /**
    * Generates the default index.html template content.
-   *
    * @returns {string} The initial HTML template string.
    */
   getInitialHtml() {
