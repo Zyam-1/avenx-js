@@ -7,21 +7,24 @@ Styling is defined in the companion `.component.css` stylesheet. At compile-time
 
 ## 1. Scoped CSS Blocks (`<@css>`)
 
-CSS rules defined inside `<@css>` are hashed and appended with a unique class suffix. The compiler extracts this CSS and merges the generated class directly into the component's HTML tags.
+CSS rules defined inside `<@css>` use named blocks without dot prefixes. The compiler extracts this CSS, hashes the block names into unique class suffixes, and binds them to the component's HTML tags via the `@css` attribute.
 
 ```css
 <@css>
-    .card {
+    card {
         padding: 1.5rem;
         border: 1px solid #eee;
-    }
-    
-    /* Nesting references with & represent the component's scoped class */
-    &:hover {
-        border-color: #6366f1;
+        
+        /* Pseudo-selectors must be nested inside the named block */
+        &:hover {
+            border-color: #6366f1;
+        }
     }
 </@css>
 ```
+<div @css="card">
+    <!-- Component Content -->
+</div>
 
 ## 2. Global CSS & Custom Variables (`<@global>`)
 
@@ -39,7 +42,7 @@ Declare global styles or design token variables using the `<@global>` block. Use
 </@global>
 
 <@css>
-    .btn {
+    btn {
         background-color: @primary-color;
         color: white;
     }
