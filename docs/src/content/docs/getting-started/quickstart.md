@@ -73,12 +73,12 @@ Open `src/components/counter/counter.component.css` and define your scoped style
 
     .number {
         font-size: 1.25rem;
-        color: var(--text-dark);
+        color: @text-dark;
         margin: 1rem 0;
     }
 
     button {
-        background-color: var(--brand-color);
+        background-color: @brand-color;
         color: white;
         border: none;
         padding: 0.5rem 1rem;
