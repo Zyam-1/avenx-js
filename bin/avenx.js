@@ -530,6 +530,18 @@ class AvenxCLI {
       });
     });
 
+    server.on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.error(
+          `\n❌ Port ${port} is already in use.\n` +
+            `   Stop the process using that port, or start the dev server on a different one.\n`,
+        );
+        process.exit(1);
+      }
+      // Re-throw anything unexpected so it is not silently swallowed.
+      throw err;
+    });
+
     server.listen(port, () => {
       const url = `http://localhost:${port}`;
       console.log(`\n🚀 Dev-Server running at ${url}`);
