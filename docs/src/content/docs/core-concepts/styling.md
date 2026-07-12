@@ -69,11 +69,11 @@ This is equivalent to writing:
 
 ### Attribute vs. tag syntax
 
-| | Attribute syntax | Tag syntax |
-|---|---|---|
-| Form | `<div @css card>` | `<@css card />` |
-| Placement | On the element itself | As a child or sibling of the element |
-| Best for | Static, hand-written templates | Templates where the target element is generated or you don't want to touch its opening tag directly |
+|           | Attribute syntax               | Tag syntax                                                                                          |
+| --------- | ------------------------------ | --------------------------------------------------------------------------------------------------- |
+| Form      | `<div @css card>`              | `<@css card />`                                                                                     |
+| Placement | On the element itself          | As a child or sibling of the element                                                                |
+| Best for  | Static, hand-written templates | Templates where the target element is generated or you don't want to touch its opening tag directly |
 
 Both forms produce the same scoped class and can be used interchangeably; choose whichever fits your template's structure better.
 
